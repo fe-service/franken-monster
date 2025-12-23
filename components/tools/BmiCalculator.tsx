@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Activity } from 'lucide-react';
 import { NeuCard } from '../ui/NeuCard';
@@ -68,7 +69,7 @@ export const BmiCalculator: React.FC = () => {
                <span className={`text-xl font-bold ${category?.color}`}>{category?.text}</span>
              </>
            ) : (
-             <span className="text-neu-text/40 font-bold">Enter your details</span>
+             <span className="text-neu-text/40 font-bold">{t.tools.bmiCalculator.enterDetails}</span>
            )}
         </NeuCard>
       </div>

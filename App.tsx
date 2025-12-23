@@ -467,7 +467,7 @@ const MainLayout = () => {
 
       {/* Main Content Area */}
       <main className="flex-1 md:ml-24 p-6 md:p-12 pb-32 md:pb-12 min-h-screen overflow-y-auto pt-20 md:pt-12">
-        <div className="max-w-6xl mx-auto h-full flex flex-col justify-center">
+        <div className="w-full mx-auto h-full flex flex-col justify-center">
           {renderContent()}
         </div>
       </main>

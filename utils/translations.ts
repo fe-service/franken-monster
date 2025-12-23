@@ -1,6 +1,11 @@
 
 export const translations = {
   en: {
+    common: {
+      yes: 'Yes',
+      no: 'No',
+      autoDetect: 'Auto Detect'
+    },
     app: {
       title: 'FrankenMonster',
       subtitle: 'A monstrous collection of various utility tools stitched together.',
@@ -85,7 +90,8 @@ export const translations = {
         underweight: 'Underweight',
         normal: 'Normal weight',
         overweight: 'Overweight',
-        obese: 'Obese'
+        obese: 'Obese',
+        enterDetails: 'Enter your details'
       },
       myNotes: {
         name: 'My Notes',
@@ -95,7 +101,13 @@ export const translations = {
         addNote: 'New Note',
         addTask: 'Add Task',
         placeholder: 'Task description...',
-        titlePlaceholder: 'Note Title'
+        titlePlaceholder: 'Note Title',
+        downloadBackup: 'Download Backup',
+        importBackup: 'Import Backup',
+        migrated: 'Migrated expired notes to today',
+        migratedTitle: 'Migrated Tasks',
+        pin: 'Pin Note',
+        created: 'Created: '
       },
       cryptoTool: {
         name: 'Crypto Tool',
@@ -106,6 +118,7 @@ export const translations = {
         output: 'Output',
         aesKey: 'AES Key / Password',
         aesKeyPlaceholder: 'Secret Passphrase',
+        decryptPlaceholder: 'Paste encrypted Base64 string...',
         mode: 'Mode',
         encrypt: 'Encrypt',
         decrypt: 'Decrypt',
@@ -144,7 +157,8 @@ export const translations = {
         flags: 'Flags (e.g. gi)',
         testString: 'Test String',
         matches: 'Matches',
-        noMatch: 'No matches found'
+        noMatch: 'No matches found',
+        invalidRegex: 'Invalid Regular Expression'
       },
       paletteGenerator: {
         name: 'Palette Gen',
@@ -168,12 +182,27 @@ export const translations = {
         }
       },
       urlEncoder: {
-        name: 'URL Encoder',
-        desc: 'Escape/Unescape',
-        title: 'URL Encoder / Decoder',
-        subtitle: 'Encode or decode standard URL formatting.',
+        name: 'URL Tool',
+        desc: 'Parser & Encoder',
+        title: 'URL Parser & Builder',
+        subtitle: 'Parse, edit, and reconstruct complex URLs.',
         encode: 'Encode',
-        decode: 'Decode'
+        decode: 'Decode',
+        protocol: 'Protocol',
+        host: 'Host',
+        port: 'Port',
+        path: 'Path',
+        hash: 'Hash / Fragment',
+        params: 'Query Parameters',
+        addParam: 'Add Param',
+        key: 'Key',
+        value: 'Value',
+        fullUrl: 'Full URL',
+        invalidUrl: 'Invalid URL Format',
+        hostPlaceholder: 'example.com',
+        pathPlaceholder: '/path/to/resource',
+        hashPlaceholder: '#section',
+        noParams: 'No query parameters'
       },
       codeFormatter: {
         name: 'Code Formatter',
@@ -196,6 +225,11 @@ export const translations = {
     }
   },
   zh: {
+    common: {
+      yes: '是',
+      no: '否',
+      autoDetect: '自动检测'
+    },
     app: {
       title: '缝合怪',
       subtitle: '各种实用工具缝合在一起的怪兽级集合。',
@@ -280,7 +314,8 @@ export const translations = {
         underweight: '体重过轻',
         normal: '正常体重',
         overweight: '超重',
-        obese: '肥胖'
+        obese: '肥胖',
+        enterDetails: '请输入您的身高体重'
       },
       myNotes: {
         name: '我的便签',
@@ -290,7 +325,13 @@ export const translations = {
         addNote: '新建便签',
         addTask: '添加任务',
         placeholder: '任务描述...',
-        titlePlaceholder: '便签标题'
+        titlePlaceholder: '便签标题',
+        downloadBackup: '导出备份',
+        importBackup: '导入备份',
+        migrated: '已将过期便签自动迁移至今日',
+        migratedTitle: '自动迁移任务',
+        pin: '置顶便签',
+        created: '创建于: '
       },
       cryptoTool: {
         name: '加解密工具',
@@ -301,6 +342,7 @@ export const translations = {
         output: '输出结果',
         aesKey: 'AES 密钥 / 密码',
         aesKeyPlaceholder: '请输入密钥',
+        decryptPlaceholder: '粘贴加密后的 Base64 字符串...',
         mode: '模式',
         encrypt: 'AES 加密',
         decrypt: 'AES 解密',
@@ -339,7 +381,8 @@ export const translations = {
         flags: '标记 (如 gi)',
         testString: '测试文本',
         matches: '匹配结果',
-        noMatch: '未找到匹配项'
+        noMatch: '未找到匹配项',
+        invalidRegex: '正则表达式无效'
       },
       paletteGenerator: {
         name: '配色工具',
@@ -363,12 +406,27 @@ export const translations = {
         }
       },
       urlEncoder: {
-        name: 'URL 转码',
-        desc: '编码与解码',
-        title: 'URL 转码工具',
-        subtitle: '对 URL 进行标准编码或解码。',
+        name: 'URL 工具',
+        desc: '解析与重组',
+        title: 'URL 解析与构建',
+        subtitle: '解析 URL 结构、编辑参数并重新生成。',
         encode: '编码',
-        decode: '解码'
+        decode: '解码',
+        protocol: '协议',
+        host: '域名 (Host)',
+        port: '端口',
+        path: '路径 (Path)',
+        hash: 'Hash / 锚点',
+        params: '查询参数 (Query Params)',
+        addParam: '添加参数',
+        key: '键',
+        value: '值',
+        fullUrl: '完整 URL',
+        invalidUrl: 'URL 格式无效',
+        hostPlaceholder: 'example.com',
+        pathPlaceholder: '/path/to/resource',
+        hashPlaceholder: '#锚点',
+        noParams: '暂无查询参数'
       },
       codeFormatter: {
         name: '代码格式化',

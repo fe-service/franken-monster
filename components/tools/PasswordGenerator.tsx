@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Copy, RefreshCw, Check, ShieldCheck, ShieldAlert, Save, Pin, PinOff, Trash2, Tag } from 'lucide-react';
@@ -476,13 +477,13 @@ export const PasswordGenerator: React.FC = () => {
                                                     onClick={() => deleteHistoryItem(item.id)}
                                                     className="px-4 py-1 bg-red-600 text-white rounded-full text-xs font-bold shadow-lg hover:bg-red-500 transition-colors"
                                                 >
-                                                    {language === 'zh' ? '是' : 'Yes'}
+                                                    {t.common.yes}
                                                 </button>
                                                 <button 
                                                     onClick={() => setDeleteId(null)}
                                                     className="px-4 py-1 bg-white/10 text-white border border-white/20 rounded-full text-xs font-bold shadow-lg hover:bg-white/20 transition-colors"
                                                 >
-                                                    {language === 'zh' ? '否' : 'No'}
+                                                    {t.common.no}
                                                 </button>
                                             </div>
                                         </div>

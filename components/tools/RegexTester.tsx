@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { NeuCard } from '../ui/NeuCard';
 import { NeuInput, NeuTextArea } from '../ui/NeuInput';
@@ -67,7 +68,7 @@ export const RegexTester: React.FC = () => {
             <label className="text-xs font-bold uppercase tracking-wider text-neu-text/60 ml-4">{t.tools.regexTester.matches}</label>
             <div className="bg-neu-base rounded-[20px] shadow-neu-pressed p-6 min-h-[100px] max-h-[200px] overflow-y-auto">
                 {matches === null ? (
-                    <span className="text-red-500 font-bold">Invalid Regular Expression</span>
+                    <span className="text-red-500 font-bold">{t.tools.regexTester.invalidRegex}</span>
                 ) : matches.length > 0 ? (
                     <div className="flex flex-wrap gap-2">
                         {matches.map((m, i) => (

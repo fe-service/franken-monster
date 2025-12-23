@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { ArrowDown, Copy, Check, Lock, Unlock, Hash, FileCode, Eye, EyeOff, Trash2 } from 'lucide-react';
+import { ArrowDown, Copy, Check, Lock, Hash, FileCode, Eye, EyeOff, Trash2 } from 'lucide-react';
 import { NeuCard } from '../ui/NeuCard';
 import { NeuTextArea, NeuInput } from '../ui/NeuInput';
 import { NeuButton } from '../ui/NeuButton';
+import { CodeEditor } from '../ui/CodeEditor';
 import { useAppStore } from '../../utils/store';
 
 // --- Native SHA-256 ---
@@ -15,9 +16,6 @@ async function sha256(message: string) {
 }
 
 // --- AES-256-GCM Implementation matching Node.js crypto ---
-// Format: Salt (64) | IV (16) | Tag (16) | Ciphertext
-// Key Derivation: PBKDF2, SHA-512, 128 iterations, 64 byte salt (from payload or random)
-
 async function deriveKey(password: string, salt: Uint8Array): Promise<CryptoKey> {
     const enc = new TextEncoder();
     const keyMaterial = await window.crypto.subtle.importKey(
@@ -56,9 +54,6 @@ async function encryptAes(text: string, password: string): Promise<string> {
 
     const encryptedBytes = new Uint8Array(encryptedBuffer);
     const tagLength = 16;
-    // Separate ciphertext and tag for re-ordering
-    // WebCrypto: [Ciphertext ..... Tag]
-    // Target: [Salt][IV][Tag][Ciphertext]
     
     const ciphertext = encryptedBytes.slice(0, encryptedBytes.length - tagLength);
     const tag = encryptedBytes.slice(encryptedBytes.length - tagLength);
@@ -72,8 +67,6 @@ async function encryptAes(text: string, password: string): Promise<string> {
     result.set(tag, offset); offset += tag.length;
     result.set(ciphertext, offset);
 
-    // Convert to Base64
-    // Using simple loop to avoid stack overflow with spread operator on large arrays
     let binary = '';
     const len = result.byteLength;
     for (let i = 0; i < len; i++) {
@@ -92,7 +85,6 @@ async function decryptAes(base64Data: string, password: string): Promise<string>
 
         if (bytes.length < 96) throw new Error("Invalid data: too short");
 
-        // Parse format: Salt (64) | IV (16) | Tag (16) | Ciphertext
         const salt = bytes.slice(0, 64);
         const iv = bytes.slice(64, 80);
         const tag = bytes.slice(80, 96);
@@ -100,7 +92,6 @@ async function decryptAes(base64Data: string, password: string): Promise<string>
 
         const key = await deriveKey(password, salt);
 
-        // Reconstruct for Web Crypto: Ciphertext + Tag
         const dataToDecrypt = new Uint8Array(ciphertext.length + tag.length);
         dataToDecrypt.set(ciphertext, 0);
         dataToDecrypt.set(tag, ciphertext.length);
@@ -125,7 +116,12 @@ export const CryptoTool: React.FC = () => {
   const [key, setKey] = useState('abcdefgabcdefgqq');
   const [showKey, setShowKey] = useState(false);
   const [activeTab, setActiveTab] = useState<'AES' | 'BASE64' | 'HASH'>('AES');
-  const [copied, setCopied] = useState(false);
+  
+  // Separate copy states for better feedback
+  const [outputCopied, setOutputCopied] = useState(false);
+  const [inputCopied, setInputCopied] = useState(false);
+  
+  const [outLang, setOutLang] = useState('plaintext');
 
   // AES State - Default to DECRYPT
   const [aesMode, setAesMode] = useState<'ENCRYPT' | 'DECRYPT'>('DECRYPT');
@@ -133,9 +129,8 @@ export const CryptoTool: React.FC = () => {
   const [b64Mode, setB64Mode] = useState<'ENCODE' | 'DECODE'>('ENCODE');
 
   const process = async () => {
-    // For decryption, trim is important to remove accidental whitespace in base64
-    // For encryption, we usually want to preserve whitespace if it's user intent, but trim() is safer for general tools
     const cleanInput = input.trim(); 
+    setOutLang('plaintext'); // Reset default
     
     if (!cleanInput) {
       setOutput('');
@@ -159,6 +154,7 @@ export const CryptoTool: React.FC = () => {
                 const parsed = JSON.parse(result);
                 if (typeof parsed === 'object' && parsed !== null) {
                     setOutput(JSON.stringify(parsed, null, 2));
+                    setOutLang('json'); // Switch editor to JSON mode
                 } else {
                     setOutput(result);
                 }
@@ -181,17 +177,34 @@ export const CryptoTool: React.FC = () => {
   const clear = () => {
     setInput('');
     setOutput('');
+    setOutLang('plaintext');
   };
 
-  const copyToClipboard = () => {
-    if (!output) return;
-    navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copyText = (text: string, isInput: boolean) => {
+    if (!text) return;
+    navigator.clipboard.writeText(text);
+    if (isInput) {
+        setInputCopied(true);
+        setTimeout(() => setInputCopied(false), 2000);
+    } else {
+        setOutputCopied(true);
+        setTimeout(() => setOutputCopied(false), 2000);
+    }
   };
+
+  const CopyButton = ({ onClick, active }: { onClick: () => void, active: boolean }) => (
+    <button 
+        onClick={onClick} 
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-neu-text/60 hover:text-neu-accent hover:bg-neu-text/5 active:scale-95"
+        title={t.tools.cryptoTool.copy}
+    >
+        {active ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+        <span className={active ? "text-green-500" : ""}>{active ? t.tools.cryptoTool.copied : t.tools.cryptoTool.copy}</span>
+    </button>
+  );
 
   return (
-    <div className="max-w-3xl mx-auto space-y-8 animate-fade-in">
+    <div className="w-full max-w-7xl mx-auto space-y-8 animate-fade-in px-4">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-black text-neu-text mb-2">{t.tools.cryptoTool.title}</h2>
         <p className="text-neu-text/60">{t.tools.cryptoTool.subtitle}</p>
@@ -202,7 +215,7 @@ export const CryptoTool: React.FC = () => {
             {(['AES', 'BASE64', 'HASH'] as const).map(tab => (
                  <button
                  key={tab}
-                 onClick={() => { setActiveTab(tab); setOutput(''); }}
+                 onClick={() => { setActiveTab(tab); setOutput(''); setOutLang('plaintext'); }}
                  className={`px-6 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${activeTab === tab ? 'bg-neu-base shadow-neu-flat text-neu-accent' : 'text-neu-text/60 hover:text-neu-text'}`}
                >
                  {tab === 'AES' && <Lock size={14} />}
@@ -236,9 +249,10 @@ export const CryptoTool: React.FC = () => {
                         }
                      />
                  </div>
-                 <div className="bg-neu-base p-1 rounded-full shadow-neu-pressed flex shrink-0">
-                    <button onClick={() => setAesMode('DECRYPT')} className={`px-4 py-2 rounded-full text-xs font-bold ${aesMode === 'DECRYPT' ? 'text-neu-accent shadow-neu-flat' : 'text-neu-text/50'}`}>{t.tools.cryptoTool.decrypt}</button>
-                    <button onClick={() => setAesMode('ENCRYPT')} className={`px-4 py-2 rounded-full text-xs font-bold ${aesMode === 'ENCRYPT' ? 'text-neu-accent shadow-neu-flat' : 'text-neu-text/50'}`}>{t.tools.cryptoTool.encrypt}</button>
+                 {/* Aligned Buttons - matched py-3 to input's py-3 */}
+                 <div className="bg-neu-base p-1 rounded-full shadow-neu-pressed flex shrink-0 h-[50px] items-center">
+                    <button onClick={() => setAesMode('DECRYPT')} className={`px-6 h-full rounded-full text-sm font-bold flex items-center ${aesMode === 'DECRYPT' ? 'text-neu-accent shadow-neu-flat' : 'text-neu-text/50'}`}>{t.tools.cryptoTool.decrypt}</button>
+                    <button onClick={() => setAesMode('ENCRYPT')} className={`px-6 h-full rounded-full text-sm font-bold flex items-center ${aesMode === 'ENCRYPT' ? 'text-neu-accent shadow-neu-flat' : 'text-neu-text/50'}`}>{t.tools.cryptoTool.encrypt}</button>
                  </div>
              </div>
          )}
@@ -258,14 +272,19 @@ export const CryptoTool: React.FC = () => {
              </div>
          )}
 
-         <NeuTextArea 
-           label={t.tools.cryptoTool.input}
-           value={input}
-           onChange={(e) => setInput(e.target.value)}
-           rows={3}
-           placeholder={activeTab === 'AES' && aesMode === 'DECRYPT' ? 'Paste encrypted Base64 string...' : '...'}
-           spellCheck={false}
-         />
+         <div className="space-y-2">
+            <div className="flex justify-between items-center px-4">
+                <label className="text-xs font-bold uppercase tracking-wider text-neu-text/60">{t.tools.cryptoTool.input}</label>
+                <CopyButton onClick={() => copyText(input, true)} active={inputCopied} />
+            </div>
+            <NeuTextArea 
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                rows={3}
+                placeholder={activeTab === 'AES' && aesMode === 'DECRYPT' ? t.tools.cryptoTool.decryptPlaceholder : '...'}
+                spellCheck={false}
+            />
+         </div>
          
          <div className="flex justify-center gap-6">
             <NeuButton onClick={clear} className="w-full md:w-auto px-8" variant="danger">
@@ -276,21 +295,18 @@ export const CryptoTool: React.FC = () => {
             </NeuButton>
          </div>
 
-         <div className="relative">
-            <NeuTextArea 
-                label={t.tools.cryptoTool.output}
-                value={output}
-                readOnly
-                rows={16}
-                className="font-mono text-sm bg-neu-base/50"
-                spellCheck={false}
-            />
-            <div className="absolute right-4 bottom-4">
-                <NeuButton onClick={copyToClipboard} active={copied} className="!px-3 !py-2 text-xs">
-                    {copied ? <Check size={14} /> : <Copy size={14} />}
-                    {copied ? t.tools.cryptoTool.copied : t.tools.cryptoTool.copy}
-                </NeuButton>
-            </div>
+         <div className="space-y-2">
+             <div className="flex justify-between items-center px-4">
+                <label className="text-xs font-bold uppercase tracking-wider text-neu-text/60">{t.tools.cryptoTool.output}</label>
+                <CopyButton onClick={() => copyText(output, false)} active={outputCopied} />
+             </div>
+             {/* Monaco Editor Wrapper */}
+             <CodeEditor 
+                value={output} 
+                language={outLang}
+                readOnly={true}
+                height="400px"
+             />
          </div>
       </NeuCard>
     </div>

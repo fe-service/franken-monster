@@ -1,5 +1,4 @@
 
-
 export enum ToolId {
   DASHBOARD = 'DASHBOARD',
   
@@ -59,6 +58,8 @@ export interface Note {
   title: string;
   color: string; // Tailwind class or hex
   tasks: NoteTask[];
+  createdAt: number; // Timestamp
+  pinned: boolean;
 }
 
 export type Language = 'en' | 'zh';

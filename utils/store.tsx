@@ -1,5 +1,6 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Language, Theme, ToolId, Note } from '../types';
+import { Language, Theme, ToolId, Note, NoteTask } from '../types';
 import { translations } from './translations';
 
 interface AppContextType {
@@ -33,7 +34,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const savedFavorites = localStorage.getItem('neubox_favorites');
     const savedNotes = localStorage.getItem('neubox_notes');
     
-    if (savedLang) setLanguage(savedLang);
+    // Set language first so we can use correct translations if needed
+    let currentLang = language;
+    if (savedLang) {
+      setLanguage(savedLang);
+      currentLang = savedLang;
+    }
     if (savedTheme) {
       setTheme(savedTheme);
       document.documentElement.setAttribute('data-theme', savedTheme);
@@ -54,7 +60,72 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
     if (savedNotes) {
       try {
-        setNotes(JSON.parse(savedNotes));
+        let loadedNotes: Note[] = JSON.parse(savedNotes);
+        
+        // --- Migration Logic for Expired Notes ---
+        // 1. Identify notes that are NOT pinned and createdAt < today
+        // 2. Extract unfinished tasks
+        // 3. Create a new note with those tasks
+        // 4. Remove those tasks from old notes
+        
+        const now = new Date();
+        const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        
+        let unfinishedTasks: NoteTask[] = [];
+        let hasChanges = false;
+
+        const processedNotes = loadedNotes.map(n => {
+           // Ensure new fields exist for legacy data
+           const note = { 
+               ...n, 
+               createdAt: n.createdAt || Date.now(),
+               pinned: n.pinned || false 
+           };
+
+           if (note.pinned) return note;
+
+           // Check if note is from before today
+           const noteDate = new Date(note.createdAt);
+           const noteStartOfDay = new Date(noteDate.getFullYear(), noteDate.getMonth(), noteDate.getDate()).getTime();
+
+           if (noteStartOfDay < startOfToday) {
+               // Extract unfinished tasks
+               const openTasks = note.tasks.filter(t => !t.done);
+               if (openTasks.length > 0) {
+                   unfinishedTasks = [...unfinishedTasks, ...openTasks];
+                   hasChanges = true;
+                   
+                   // Remove moved tasks from old note
+                   return {
+                       ...note,
+                       tasks: note.tasks.filter(t => t.done)
+                   };
+               }
+           }
+           return note;
+        });
+
+        let finalNotes = processedNotes;
+
+        if (unfinishedTasks.length > 0) {
+            const title = translations[currentLang].tools.myNotes.migratedTitle + ' ' + new Date().toLocaleDateString();
+            const migratedNote: Note = {
+                id: Date.now().toString(),
+                title: title,
+                color: 'bg-yellow-200',
+                tasks: unfinishedTasks,
+                createdAt: Date.now(),
+                pinned: false
+            };
+            finalNotes = [migratedNote, ...processedNotes];
+            hasChanges = true;
+        }
+
+        setNotes(finalNotes);
+        if (hasChanges) {
+            localStorage.setItem('neubox_notes', JSON.stringify(finalNotes));
+        }
+
       } catch (e) {
         console.error('Failed to parse notes', e);
       }
@@ -63,8 +134,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         setNotes([{
             id: '1',
             title: '欢迎使用',
-            color: 'bg-yellow-100 dark:bg-yellow-900/30',
-            tasks: [{ id: 't1', text: '创建您的第一条便签', done: false }]
+            color: 'bg-yellow-200',
+            tasks: [{ id: 't1', text: '创建您的第一条便签', done: false }],
+            createdAt: Date.now(),
+            pinned: true
         }]);
     }
   }, []);
