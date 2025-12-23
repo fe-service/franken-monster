@@ -19,7 +19,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useState<Language>('zh');
   const [theme, setTheme] = useState<Theme>('light');
   const [recentTools, setRecentTools] = useState<ToolId[]>([]);
   const [favoriteTools, setFavoriteTools] = useState<ToolId[]>([]);
@@ -59,12 +59,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         console.error('Failed to parse notes', e);
       }
     } else {
-        // Initial Sample Note
+        // Initial Sample Note (Localized default for ZH)
         setNotes([{
             id: '1',
-            title: 'Welcome',
+            title: '欢迎使用',
             color: 'bg-yellow-100 dark:bg-yellow-900/30',
-            tasks: [{ id: 't1', text: 'Create your first note', done: false }]
+            tasks: [{ id: 't1', text: '创建您的第一条便签', done: false }]
         }]);
     }
   }, []);

@@ -1,8 +1,8 @@
+
 import React, { useState } from 'react';
 import { 
   LayoutGrid, 
   Lock, 
-  Timer, 
   Palette, 
   Sparkles,
   Moon,
@@ -11,8 +11,6 @@ import {
   History,
   Heart,
   Scale,
-  FileText,
-  Activity,
   Zap,
   Package,
   Cpu,
@@ -21,16 +19,18 @@ import {
   FileJson,
   Banknote,
   Regex,
-  Brush
+  Brush,
+  Link,
+  Code,
+  Layers,
+  Activity
 } from 'lucide-react';
 import { ToolId, ToolCategory } from './types';
 import { NeuButton } from './components/ui/NeuButton';
 import { PasswordGenerator } from './components/tools/PasswordGenerator';
-import { PomodoroTimer } from './components/tools/PomodoroTimer';
 import { ColorMixer } from './components/tools/ColorMixer';
 import { AiAssistant } from './components/tools/AiAssistant';
 import { UnitConverter } from './components/tools/UnitConverter';
-import { TextAnalyzer } from './components/tools/TextAnalyzer';
 import { BmiCalculator } from './components/tools/BmiCalculator';
 import { MyNotes } from './components/tools/MyNotes';
 import { CryptoTool } from './components/tools/CryptoTool';
@@ -38,6 +38,9 @@ import { JsonFormatter } from './components/tools/JsonFormatter';
 import { CurrencyConverter } from './components/tools/CurrencyConverter';
 import { RegexTester } from './components/tools/RegexTester';
 import { PaletteGenerator } from './components/tools/PaletteGenerator';
+import { UrlEncoder } from './components/tools/UrlEncoder';
+import { CodeFormatter } from './components/tools/CodeFormatter';
+import { GradientGenerator } from './components/tools/GradientGenerator';
 import { AppProvider, useAppStore } from './utils/store';
 
 // Component for the dashboard grid
@@ -49,7 +52,7 @@ const Dashboard: React.FC<{
   const [searchQuery, setSearchQuery] = useState('');
 
   const tools = [
-    // Productivity
+    // Productivity (Reduced)
     { 
       id: ToolId.MY_NOTES, 
       name: t.tools.myNotes.name, 
@@ -57,29 +60,9 @@ const Dashboard: React.FC<{
       desc: t.tools.myNotes.desc,
       category: ToolCategory.PRODUCTIVITY
     },
-    { 
-      id: ToolId.POMODORO, 
-      name: t.tools.pomodoro.name, 
-      icon: <Timer size={28} />, 
-      desc: t.tools.pomodoro.desc,
-      category: ToolCategory.PRODUCTIVITY
-    },
-    { 
-      id: ToolId.TEXT_ANALYZER, 
-      name: t.tools.textAnalyzer.name, 
-      icon: <FileText size={28} />, 
-      desc: t.tools.textAnalyzer.desc,
-      category: ToolCategory.PRODUCTIVITY
-    },
 
-    // Utilities
-    { 
-      id: ToolId.PASSWORD_GEN, 
-      name: t.tools.passwordGen.name, 
-      icon: <Lock size={28} />, 
-      desc: t.tools.passwordGen.desc,
-      category: ToolCategory.UTILITIES
-    },
+    // Utilities (Reordered)
+    // 1. Crypto
     { 
       id: ToolId.CRYPTO_TOOL, 
       name: t.tools.cryptoTool.name, 
@@ -87,6 +70,7 @@ const Dashboard: React.FC<{
       desc: t.tools.cryptoTool.desc,
       category: ToolCategory.UTILITIES
     },
+    // 2. JSON
     { 
       id: ToolId.JSON_FORMATTER, 
       name: t.tools.jsonFormatter.name, 
@@ -94,6 +78,31 @@ const Dashboard: React.FC<{
       desc: t.tools.jsonFormatter.desc,
       category: ToolCategory.UTILITIES
     },
+    // 3. Password Gen (Swapped with Regex)
+    { 
+      id: ToolId.PASSWORD_GEN, 
+      name: t.tools.passwordGen.name, 
+      icon: <Lock size={28} />, 
+      desc: t.tools.passwordGen.desc,
+      category: ToolCategory.UTILITIES
+    },
+    // 4. URL
+    { 
+      id: ToolId.URL_ENCODER, 
+      name: t.tools.urlEncoder.name, 
+      icon: <Link size={28} />, 
+      desc: t.tools.urlEncoder.desc,
+      category: ToolCategory.UTILITIES
+    },
+    // 5. Code
+    { 
+      id: ToolId.CODE_FORMATTER, 
+      name: t.tools.codeFormatter.name, 
+      icon: <Code size={28} />, 
+      desc: t.tools.codeFormatter.desc,
+      category: ToolCategory.UTILITIES
+    },
+    // 6. Currency
     { 
       id: ToolId.CURRENCY_CONVERTER, 
       name: t.tools.currencyConverter.name, 
@@ -101,13 +110,15 @@ const Dashboard: React.FC<{
       desc: t.tools.currencyConverter.desc,
       category: ToolCategory.UTILITIES
     },
+    // 7. Color Mixer
     { 
-      id: ToolId.REGEX_TESTER, 
-      name: t.tools.regexTester.name, 
-      icon: <Regex size={28} />, 
-      desc: t.tools.regexTester.desc,
-      category: ToolCategory.UTILITIES
+      id: ToolId.COLOR_MIXER, 
+      name: t.tools.colorMixer.name, 
+      icon: <Palette size={28} />, 
+      desc: t.tools.colorMixer.desc,
+      category: ToolCategory.UTILITIES 
     },
+    // 8. Palette
     { 
       id: ToolId.PALETTE_GENERATOR, 
       name: t.tools.paletteGenerator.name, 
@@ -115,12 +126,23 @@ const Dashboard: React.FC<{
       desc: t.tools.paletteGenerator.desc,
       category: ToolCategory.UTILITIES
     },
+    // 9. Gradient
     { 
-      id: ToolId.COLOR_MIXER, 
-      name: t.tools.colorMixer.name, 
-      icon: <Palette size={28} />, 
-      desc: t.tools.colorMixer.desc,
-      category: ToolCategory.UTILITIES 
+      id: ToolId.GRADIENT_GENERATOR, 
+      name: t.tools.gradientGenerator.name, 
+      icon: <Layers size={28} />, 
+      desc: t.tools.gradientGenerator.desc,
+      category: ToolCategory.UTILITIES
+    },
+    
+    // Remaining Utilities
+    // Regex Tester (Swapped with Password Gen)
+    { 
+      id: ToolId.REGEX_TESTER, 
+      name: t.tools.regexTester.name, 
+      icon: <Regex size={28} />, 
+      desc: t.tools.regexTester.desc,
+      category: ToolCategory.UTILITIES
     },
     { 
       id: ToolId.UNIT_CONVERTER, 
@@ -165,7 +187,7 @@ const Dashboard: React.FC<{
     .map(id => tools.find(tool => tool.id === id))
     .filter((tool): tool is typeof tools[0] => !!tool && (filterCategory ? tool.category === filterCategory : true));
 
-  const ToolCard = ({ tool }: { tool: typeof tools[0] }) => {
+  const ToolCard: React.FC<{ tool: typeof tools[0] }> = ({ tool }) => {
     const isFav = favoriteTools.includes(tool.id);
     return (
       <button
@@ -273,7 +295,7 @@ const Dashboard: React.FC<{
            {(showFavorites || showRecents) && (
               <div className="flex items-center gap-4 mb-6">
                 <h3 className="text-base font-bold text-neu-text/50 uppercase tracking-widest whitespace-nowrap">
-                  {filterCategory ? t.categories[filterCategory] : 'All Tools'}
+                  {filterCategory ? t.categories[filterCategory] : t.app.allTools}
                 </h3>
                 <div className="h-0.5 w-full bg-neu-base shadow-neu-pressed rounded-full"></div>
               </div>
@@ -321,17 +343,18 @@ const MainLayout = () => {
       // Individual Tools
       case ToolId.MY_NOTES: return <MyNotes />;
       case ToolId.PASSWORD_GEN: return <PasswordGenerator />;
-      case ToolId.POMODORO: return <PomodoroTimer />;
       case ToolId.COLOR_MIXER: return <ColorMixer />;
       case ToolId.AI_IDEA: return <AiAssistant />;
       case ToolId.UNIT_CONVERTER: return <UnitConverter />;
-      case ToolId.TEXT_ANALYZER: return <TextAnalyzer />;
       case ToolId.BMI_CALCULATOR: return <BmiCalculator />;
       case ToolId.CRYPTO_TOOL: return <CryptoTool />;
       case ToolId.JSON_FORMATTER: return <JsonFormatter />;
       case ToolId.CURRENCY_CONVERTER: return <CurrencyConverter />;
       case ToolId.REGEX_TESTER: return <RegexTester />;
       case ToolId.PALETTE_GENERATOR: return <PaletteGenerator />;
+      case ToolId.URL_ENCODER: return <UrlEncoder />;
+      case ToolId.CODE_FORMATTER: return <CodeFormatter />;
+      case ToolId.GRADIENT_GENERATOR: return <GradientGenerator />;
       
       // Home
       case ToolId.DASHBOARD:
@@ -348,7 +371,7 @@ const MainLayout = () => {
     <div className="min-h-screen bg-neu-base flex flex-col md:flex-row font-sans text-neu-text selection:bg-neu-accent/20 selection:text-neu-accent transition-colors duration-300">
       
       {/* Sidebar Navigation (Desktop) */}
-      <nav className="z-50 md:fixed md:left-0 md:top-0 md:h-screen w-full md:w-24 bg-neu-base flex md:flex-col items-center justify-between p-4 md:py-8 shadow-neu-flat md:shadow-none border-t md:border-r border-neu-text/5 fixed bottom-0 transition-colors duration-300">
+      <nav className="z-50 md:fixed md:left-0 md:top-0 md:h-screen w-full md:w-24 bg-neu-base flex md:flex-col items-center justify-between p-0 md:py-8 shadow-neu-flat md:shadow-none border-t md:border-t-0 border-neu-text/10 md:border-r fixed bottom-0 transition-colors duration-300">
         <div className="hidden md:flex flex-col items-center gap-2">
            <div 
              className="w-12 h-12 rounded-xl bg-neu-accent shadow-neu-icon flex items-center justify-center text-white font-black text-xl cursor-pointer hover:scale-105 transition-transform"
@@ -358,44 +381,52 @@ const MainLayout = () => {
            </div>
         </div>
 
-        <div className="flex md:flex-col gap-4 w-full md:w-auto justify-evenly md:justify-center overflow-x-auto md:overflow-visible no-scrollbar pb-2 md:pb-0 px-2 md:px-0">
+        <div className="flex md:flex-col gap-4 w-full md:w-auto justify-evenly md:justify-center overflow-x-auto md:overflow-visible no-scrollbar p-0 md:p-0">
+          <div className="p-2 md:p-0">
           <NeuButton 
-            className="!px-3 !py-3 rounded-xl flex-shrink-0"
+            className="!p-2 rounded-xl flex-shrink-0"
             active={activeTool === ToolId.DASHBOARD}
             onClick={() => handleToolSelect(ToolId.DASHBOARD)}
             title={t.app.dashboard}
           >
             <LayoutGrid size={24} />
           </NeuButton>
+          </div>
           
           <div className="w-full h-0.5 bg-neu-text/10 rounded-full hidden md:block my-2"></div>
 
+          <div className="p-2 md:p-0">
           <NeuButton 
-            className="!px-3 !py-3 rounded-xl flex-shrink-0"
+            className="!p-2 rounded-xl flex-shrink-0"
             active={activeTool === ToolId.CATEGORY_PRODUCTIVITY}
             onClick={() => handleToolSelect(ToolId.CATEGORY_PRODUCTIVITY)}
             title={t.categories.PRODUCTIVITY}
           >
             <Zap size={24} />
           </NeuButton>
+          </div>
 
+          <div className="p-2 md:p-0">
           <NeuButton 
-            className="!px-3 !py-3 rounded-xl flex-shrink-0"
+            className="!p-2 rounded-xl flex-shrink-0"
             active={activeTool === ToolId.CATEGORY_UTILITIES}
             onClick={() => handleToolSelect(ToolId.CATEGORY_UTILITIES)}
             title={t.categories.UTILITIES}
           >
             <Package size={24} />
           </NeuButton>
+          </div>
 
+          <div className="p-2 md:p-0">
           <NeuButton 
-            className="!px-3 !py-3 rounded-xl flex-shrink-0"
+            className="!p-2 rounded-xl flex-shrink-0"
             active={activeTool === ToolId.CATEGORY_AI}
             onClick={() => handleToolSelect(ToolId.CATEGORY_AI)}
             title={t.categories.AI}
           >
             <Cpu size={24} />
           </NeuButton>
+          </div>
         </div>
 
         {/* Settings Group */}

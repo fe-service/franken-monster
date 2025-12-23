@@ -1,13 +1,15 @@
+
 export const translations = {
   en: {
     app: {
       title: 'FrankenMonster',
-      subtitle: 'A monstrous collection of utility tools stitched together.',
+      subtitle: 'A monstrous collection of various utility tools stitched together.',
       dashboard: 'Dashboard',
       settings: 'Settings',
       search: 'Search tools...',
       recent: 'Recently Used',
-      favorites: 'Favorites'
+      favorites: 'Favorites',
+      allTools: 'All Tools'
     },
     categories: {
       PRODUCTIVITY: 'Productivity',
@@ -23,21 +25,25 @@ export const translations = {
         generate: 'Generate',
         copy: 'Copy',
         copied: 'Copied',
+        save: 'Save',
         length: 'Length',
-        numbers: 'Numbers',
-        symbols: 'Symbols'
-      },
-      pomodoro: {
-        name: 'Focus Timer',
-        desc: 'Boost productivity',
-        title: 'Focus Timer',
-        subtitle: 'Stay productive with the Pomodoro technique.',
-        focus: 'Focus',
-        break: 'Break',
-        ready: 'Ready',
-        running: 'Focusing',
-        paused: 'Paused',
-        completed: 'Completed'
+        uppercase: 'Uppercase (A-Z)',
+        lowercase: 'Lowercase (a-z)',
+        numbers: 'Numbers (0-9)',
+        symbols: 'Symbols (!@#$%^&*)',
+        excludeAmbiguous: 'No Ambiguous (i, l, 1, 0, o)',
+        noSequential: 'No Repeated/Sequential',
+        noKeyboard: 'No Keyboard Patterns (qwerty...)',
+        security: 'Security Rules',
+        history: 'History',
+        historyEmpty: 'No history yet.',
+        pin: 'Pin',
+        unpin: 'Unpin',
+        delete: 'Delete',
+        confirmDelete: 'Are you sure?',
+        addTag: 'Add Tag',
+        tagPlaceholder: 'Tag...',
+        masked: '******'
       },
       colorMixer: {
         name: 'Color Studio',
@@ -68,17 +74,6 @@ export const translations = {
         from: 'From',
         to: 'To'
       },
-      textAnalyzer: {
-        name: 'Text Analyzer',
-        desc: 'Word & char count',
-        title: 'Text Analyzer',
-        subtitle: 'Analyze your text statistics in real-time.',
-        placeholder: 'Type or paste your text here...',
-        words: 'Words',
-        chars: 'Characters',
-        sentences: 'Sentences',
-        paragraphs: 'Paragraphs'
-      },
       bmiCalculator: {
         name: 'BMI Calculator',
         desc: 'Health index',
@@ -104,15 +99,23 @@ export const translations = {
       },
       cryptoTool: {
         name: 'Crypto Tool',
-        desc: 'Encrypt / Decrypt',
-        title: 'Crypto Tool',
-        subtitle: 'Base64 encoding and Hashing utilities.',
+        desc: 'AES, Base64, MD5',
+        title: 'Encryption & Hashing',
+        subtitle: 'Advanced encryption and encoding utilities.',
         input: 'Input Text',
         output: 'Output',
+        aesKey: 'AES Key / Password',
+        aesKeyPlaceholder: 'Secret Passphrase',
         mode: 'Mode',
-        encode: 'Base64 Encode',
-        decode: 'Base64 Decode',
-        sha256: 'SHA-256 Hash'
+        encrypt: 'Encrypt',
+        decrypt: 'Decrypt',
+        encode: 'Encode',
+        decode: 'Decode',
+        hash: 'Hash',
+        copy: 'Copy',
+        copied: 'Copied',
+        process: 'Process',
+        clear: 'Clear'
       },
       jsonFormatter: {
         name: 'JSON Formatter',
@@ -149,7 +152,46 @@ export const translations = {
         title: 'Palette Generator',
         subtitle: 'Generate beautiful color harmonies.',
         generate: 'Randomize',
-        base: 'Base Color'
+        base: 'Base Hue',
+        quantity: 'Quantity',
+        roles: {
+          primary: 'Primary',
+          secondary: 'Secondary',
+          tertiary: 'Tertiary',
+          accent: 'Accent',
+          neutral: 'Neutral',
+          dark: 'Dark',
+          light: 'Light',
+          info: 'Info',
+          success: 'Success',
+          warning: 'Warning'
+        }
+      },
+      urlEncoder: {
+        name: 'URL Encoder',
+        desc: 'Escape/Unescape',
+        title: 'URL Encoder / Decoder',
+        subtitle: 'Encode or decode standard URL formatting.',
+        encode: 'Encode',
+        decode: 'Decode'
+      },
+      codeFormatter: {
+        name: 'Code Formatter',
+        desc: 'Basic Indent',
+        title: 'Code Formatter',
+        subtitle: 'Simple indentation for HTML, XML, and Code.',
+        format: 'Format'
+      },
+      gradientGenerator: {
+        name: 'Gradient Gen',
+        desc: 'Stepped colors',
+        title: 'Gradient Generator',
+        subtitle: 'Create continuous color steps between two or three colors.',
+        start: 'Start Color',
+        middle: 'Middle Color (Optional)',
+        end: 'End Color',
+        steps: 'Steps',
+        generate: 'Generate'
       }
     }
   },
@@ -161,7 +203,8 @@ export const translations = {
       settings: '设置',
       search: '搜索工具...',
       recent: '最近使用',
-      favorites: '收藏工具'
+      favorites: '收藏工具',
+      allTools: '所有工具'
     },
     categories: {
       PRODUCTIVITY: '生产力',
@@ -177,21 +220,25 @@ export const translations = {
         generate: '生成',
         copy: '复制',
         copied: '已复制',
+        save: '保存',
         length: '长度',
-        numbers: '数字',
-        symbols: '符号'
-      },
-      pomodoro: {
-        name: '专注时钟',
-        desc: '提升工作效率',
-        title: '专注时钟',
-        subtitle: '使用番茄工作法保持高效。',
-        focus: '专注',
-        break: '休息',
-        ready: '就绪',
-        running: '专注中',
-        paused: '暂停',
-        completed: '完成'
+        uppercase: '大写字母 (A-Z)',
+        lowercase: '小写字母 (a-z)',
+        numbers: '数字 (0-9)',
+        symbols: '特殊符号 (!@#$%^&*)',
+        excludeAmbiguous: '排除易混淆 (i, l, 1, 0, o)',
+        noSequential: '无重复/连续字符',
+        noKeyboard: '无键盘顺序 (qwerty...)',
+        security: '安全规则',
+        history: '历史记录 (脱敏)',
+        historyEmpty: '暂无历史记录',
+        pin: '置顶',
+        unpin: '取消置顶',
+        delete: '删除',
+        confirmDelete: '确认删除？',
+        addTag: '加标签',
+        tagPlaceholder: '标签...',
+        masked: '******'
       },
       colorMixer: {
         name: '色彩工坊',
@@ -222,17 +269,6 @@ export const translations = {
         from: '从',
         to: '到'
       },
-      textAnalyzer: {
-        name: '文本分析',
-        desc: '字数统计',
-        title: '文本分析器',
-        subtitle: '实时分析您的文本统计信息。',
-        placeholder: '在此输入或粘贴文本...',
-        words: '词数',
-        chars: '字符',
-        sentences: '句子',
-        paragraphs: '段落'
-      },
       bmiCalculator: {
         name: 'BMI 计算器',
         desc: '健康指数',
@@ -258,15 +294,23 @@ export const translations = {
       },
       cryptoTool: {
         name: '加解密工具',
-        desc: 'Base64/Hash',
+        desc: 'AES, Base64, MD5',
         title: '加解密工具',
-        subtitle: 'Base64 编码解码与哈希计算工具。',
+        subtitle: '支持 AES 加密、Base64 编解码及 MD5 哈希。',
         input: '输入文本',
         output: '输出结果',
+        aesKey: 'AES 密钥 / 密码',
+        aesKeyPlaceholder: '请输入密钥',
         mode: '模式',
+        encrypt: 'AES 加密',
+        decrypt: 'AES 解密',
         encode: 'Base64 编码',
         decode: 'Base64 解码',
-        sha256: 'SHA-256 哈希'
+        hash: 'MD5 / Hash',
+        copy: '复制',
+        copied: '已复制',
+        process: '处理',
+        clear: '清空'
       },
       jsonFormatter: {
         name: 'JSON 格式化',
@@ -303,7 +347,46 @@ export const translations = {
         title: '配色生成器',
         subtitle: '生成优美的色彩搭配方案。',
         generate: '随机生成',
-        base: '基础色'
+        base: '基础色相',
+        quantity: '生成数量',
+        roles: {
+          primary: '主要 (Primary)',
+          secondary: '次要 (Secondary)',
+          tertiary: '第三 (Tertiary)',
+          accent: '强调 (Accent)',
+          neutral: '中性 (Neutral)',
+          dark: '深色 (Dark)',
+          light: '浅色 (Light)',
+          info: '信息 (Info)',
+          success: '成功 (Success)',
+          warning: '警告 (Warning)'
+        }
+      },
+      urlEncoder: {
+        name: 'URL 转码',
+        desc: '编码与解码',
+        title: 'URL 转码工具',
+        subtitle: '对 URL 进行标准编码或解码。',
+        encode: '编码',
+        decode: '解码'
+      },
+      codeFormatter: {
+        name: '代码格式化',
+        desc: '基础缩进',
+        title: '代码格式化',
+        subtitle: 'HTML、XML 及代码的基础缩进美化。',
+        format: '格式化'
+      },
+      gradientGenerator: {
+        name: '渐变生成',
+        desc: '连续色块',
+        title: '渐变色块生成器',
+        subtitle: '生成起始色到结束色的连续渐变色值。',
+        start: '起始色',
+        middle: '中间色 (可选)',
+        end: '结束色',
+        steps: '步数 / 数量',
+        generate: '生成'
       }
     }
   }
