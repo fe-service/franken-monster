@@ -23,7 +23,8 @@ import {
   Link,
   Code,
   Layers,
-  Activity
+  Activity,
+  Settings
 } from 'lucide-react';
 import { ToolId, ToolCategory } from './types';
 import { NeuButton } from './components/ui/NeuButton';
@@ -41,6 +42,7 @@ import { PaletteGenerator } from './components/tools/PaletteGenerator';
 import { UrlEncoder } from './components/tools/UrlEncoder';
 import { CodeFormatter } from './components/tools/CodeFormatter';
 import { GradientGenerator } from './components/tools/GradientGenerator';
+import { SettingsModal } from './components/ui/SettingsModal';
 import { AppProvider, useAppStore } from './utils/store';
 
 // Component for the dashboard grid
@@ -320,7 +322,7 @@ const Dashboard: React.FC<{
 
 const MainLayout = () => {
   const [activeTool, setActiveTool] = useState<ToolId>(ToolId.DASHBOARD);
-  const { theme, toggleTheme, language, setLanguage, t, addRecentTool } = useAppStore();
+  const { theme, toggleTheme, language, setLanguage, t, addRecentTool, setSettingsOpen } = useAppStore();
 
   const handleToolSelect = (id: ToolId) => {
     setActiveTool(id);
@@ -369,6 +371,7 @@ const MainLayout = () => {
 
   return (
     <div className="min-h-screen bg-neu-base flex flex-col md:flex-row font-sans text-neu-text selection:bg-neu-accent/20 selection:text-neu-accent transition-colors duration-300">
+      <SettingsModal />
       
       {/* Sidebar Navigation (Desktop) */}
       <nav className="z-50 md:fixed md:left-0 md:top-0 md:h-screen w-full md:w-24 bg-neu-base flex md:flex-col items-center justify-between p-0 md:py-8 shadow-neu-flat md:shadow-none border-t md:border-t-0 border-neu-text/10 md:border-r fixed bottom-0 transition-colors duration-300">
@@ -446,6 +449,14 @@ const MainLayout = () => {
            >
              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
            </button>
+           
+           <button 
+             onClick={() => setSettingsOpen(true)}
+             className="w-10 h-10 rounded-full flex items-center justify-center text-neu-text/60 hover:text-neu-accent transition-colors"
+             title="Settings"
+           >
+             <Settings size={20} />
+           </button>
         </div>
       </nav>
 
@@ -461,6 +472,9 @@ const MainLayout = () => {
            </button>
            <button onClick={toggleTheme} className="text-neu-text/80">
              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+           </button>
+           <button onClick={() => setSettingsOpen(true)} className="text-neu-text/80">
+             <Settings size={20} />
            </button>
         </div>
       </div>

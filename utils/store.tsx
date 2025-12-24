@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Language, Theme, ToolId, Note, NoteTask } from '../types';
+import { Language, Theme, ToolId, Note, NoteTask, AiModelConfig } from '../types';
 import { translations } from './translations';
 
 interface AppContextType {
@@ -15,6 +15,11 @@ interface AppContextType {
   toggleFavorite: (id: ToolId) => void;
   notes: Note[];
   updateNotes: (notes: Note[]) => void;
+  // AI Configs
+  aiModels: AiModelConfig[];
+  updateAiModels: (models: AiModelConfig[]) => void;
+  isSettingsOpen: boolean;
+  setSettingsOpen: (isOpen: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -25,6 +30,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [recentTools, setRecentTools] = useState<ToolId[]>([]);
   const [favoriteTools, setFavoriteTools] = useState<ToolId[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
+  
+  // AI Models State
+  const [aiModels, setAiModels] = useState<AiModelConfig[]>([]);
+  const [isSettingsOpen, setSettingsOpen] = useState(false);
 
   // Load saved settings
   useEffect(() => {
@@ -33,6 +42,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const savedRecents = localStorage.getItem('neubox_recents');
     const savedFavorites = localStorage.getItem('neubox_favorites');
     const savedNotes = localStorage.getItem('neubox_notes');
+    const savedModels = localStorage.getItem('neubox_ai_models');
     
     // Set language first so we can use correct translations if needed
     let currentLang = language;
@@ -58,16 +68,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         console.error('Failed to parse favorite tools', e);
       }
     }
+    if (savedModels) {
+      try {
+        setAiModels(JSON.parse(savedModels));
+      } catch (e) {
+        console.error('Failed to parse models', e);
+      }
+    }
+    
     if (savedNotes) {
       try {
         let loadedNotes: Note[] = JSON.parse(savedNotes);
         
         // --- Migration Logic for Expired Notes ---
-        // 1. Identify notes that are NOT pinned and createdAt < today
-        // 2. Extract unfinished tasks
-        // 3. Create a new note with those tasks
-        // 4. Remove those tasks from old notes
-        
         const now = new Date();
         const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
         
@@ -182,6 +195,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       setNotes(newNotes);
       localStorage.setItem('neubox_notes', JSON.stringify(newNotes));
   };
+  
+  const updateAiModels = (newModels: AiModelConfig[]) => {
+      setAiModels(newModels);
+      localStorage.setItem('neubox_ai_models', JSON.stringify(newModels));
+  };
 
   const t = translations[language];
 
@@ -197,7 +215,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       favoriteTools,
       toggleFavorite,
       notes,
-      updateNotes
+      updateNotes,
+      aiModels,
+      updateAiModels,
+      isSettingsOpen,
+      setSettingsOpen
     }}>
       {children}
     </AppContext.Provider>

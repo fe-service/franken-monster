@@ -62,5 +62,18 @@ export interface Note {
   pinned: boolean;
 }
 
+export type AiModelType = 'text' | 'coding' | 'image' | 'video';
+
+export interface AiModelConfig {
+  id: string;
+  name: string;
+  apiUrl: string; // Base URL
+  apiKey: string; // Token
+  sortOrder: number;
+  modelType: AiModelType;
+  boundTools: ToolId[]; // Tools that specifically use this model
+  systemPrompt?: string; // Default system prompt
+}
+
 export type Language = 'en' | 'zh';
 export type Theme = 'light' | 'dark';

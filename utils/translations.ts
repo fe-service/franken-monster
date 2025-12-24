@@ -4,7 +4,12 @@ export const translations = {
     common: {
       yes: 'Yes',
       no: 'No',
-      autoDetect: 'Auto Detect'
+      autoDetect: 'Auto Detect',
+      save: 'Save',
+      cancel: 'Cancel',
+      delete: 'Delete',
+      edit: 'Edit',
+      add: 'Add'
     },
     app: {
       title: 'FrankenMonster',
@@ -14,7 +19,29 @@ export const translations = {
       search: 'Search tools...',
       recent: 'Recently Used',
       favorites: 'Favorites',
-      allTools: 'All Tools'
+      allTools: 'All Tools',
+      modelConfig: 'AI Models'
+    },
+    settings: {
+      title: 'Settings',
+      models: 'AI Model Configuration',
+      addModel: 'Add New Model',
+      noModels: 'No models configured. Please add an AI model to use AI tools.',
+      fields: {
+        name: 'Model Name (e.g. gemini-2.0-flash)',
+        apiUrl: 'API Base URL (Optional)',
+        apiKey: 'API Key / Token',
+        order: 'Sort Order',
+        type: 'Model Type',
+        tools: 'Bind to Tools (Optional)',
+        systemPrompt: 'Default System Prompt'
+      },
+      types: {
+        text: 'Text / Chat',
+        coding: 'Coding',
+        image: 'Image Generation',
+        video: 'Video Generation'
+      }
     },
     categories: {
       PRODUCTIVITY: 'Productivity',
@@ -66,7 +93,9 @@ export const translations = {
         placeholder: 'E.g., Give me 5 unique names for a coffee shop...',
         button: 'Inspire Me',
         thinking: 'Thinking...',
-        error: 'Failed to generate content'
+        error: 'Failed to generate content',
+        selectModel: 'Select Model',
+        noModelConfigured: 'No AI models configured. Please go to Settings.'
       },
       unitConverter: {
         name: 'Unit Converter',
@@ -228,7 +257,12 @@ export const translations = {
     common: {
       yes: '是',
       no: '否',
-      autoDetect: '自动检测'
+      autoDetect: '自动检测',
+      save: '保存',
+      cancel: '取消',
+      delete: '删除',
+      edit: '编辑',
+      add: '添加'
     },
     app: {
       title: '缝合怪',
@@ -238,7 +272,29 @@ export const translations = {
       search: '搜索工具...',
       recent: '最近使用',
       favorites: '收藏工具',
-      allTools: '所有工具'
+      allTools: '所有工具',
+      modelConfig: 'AI 模型配置'
+    },
+    settings: {
+      title: '设置',
+      models: 'AI 模型配置',
+      addModel: '添加新模型',
+      noModels: '暂无配置模型。请添加模型以使用 AI 工具。',
+      fields: {
+        name: '模型名称 (如 gemini-2.0-flash)',
+        apiUrl: 'API 代理地址 (可选)',
+        apiKey: 'API 密钥 / Token',
+        order: '排序权重',
+        type: '模型类型',
+        tools: '绑定工具 (可选)',
+        systemPrompt: '默认系统提示词 (System Prompt)'
+      },
+      types: {
+        text: '文本 / 对话',
+        coding: '编程',
+        image: '图像生成',
+        video: '视频生成'
+      }
     },
     categories: {
       PRODUCTIVITY: '生产力',
@@ -290,7 +346,9 @@ export const translations = {
         placeholder: '例如：给我的咖啡店起5个独特的名字...',
         button: '给我灵感',
         thinking: '思考中...',
-        error: '生成内容失败'
+        error: '生成内容失败',
+        selectModel: '选择模型',
+        noModelConfigured: '未配置 AI 模型，请前往设置。'
       },
       unitConverter: {
         name: '万能换算',
