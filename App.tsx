@@ -43,6 +43,7 @@ import { UrlEncoder } from './components/tools/UrlEncoder';
 import { CodeFormatter } from './components/tools/CodeFormatter';
 import { GradientGenerator } from './components/tools/GradientGenerator';
 import { SettingsModal } from './components/ui/SettingsModal';
+import { AppIcon } from './components/ui/AppIcon';
 import { AppProvider, useAppStore } from './utils/store';
 
 // Component for the dashboard grid
@@ -377,10 +378,10 @@ const MainLayout = () => {
       <nav className="z-50 md:fixed md:left-0 md:top-0 md:h-screen w-full md:w-24 bg-neu-base flex md:flex-col items-center justify-between p-0 md:py-8 shadow-neu-flat md:shadow-none border-t md:border-t-0 border-neu-text/10 md:border-r fixed bottom-0 transition-colors duration-300">
         <div className="hidden md:flex flex-col items-center gap-2">
            <div 
-             className="w-12 h-12 rounded-xl bg-neu-accent shadow-neu-icon flex items-center justify-center text-white font-black text-xl cursor-pointer hover:scale-105 transition-transform"
+             className="w-12 h-12 rounded-xl bg-neu-accent shadow-neu-icon flex items-center justify-center text-white cursor-pointer hover:scale-105 transition-transform"
              onClick={() => handleToolSelect(ToolId.DASHBOARD)}
            >
-             F
+             <AppIcon className="w-8 h-8" />
            </div>
         </div>
 
@@ -463,9 +464,11 @@ const MainLayout = () => {
       {/* Mobile Header for Settings (Visible only on mobile) */}
       <div className="md:hidden fixed top-0 left-0 w-full p-4 flex justify-between items-center z-40 bg-neu-base/90 backdrop-blur-sm">
         <div 
-          className="w-8 h-8 rounded-lg bg-neu-accent flex items-center justify-center text-white font-bold text-lg cursor-pointer"
+          className="w-8 h-8 rounded-lg bg-neu-accent flex items-center justify-center text-white cursor-pointer"
           onClick={() => handleToolSelect(ToolId.DASHBOARD)}
-        >F</div>
+        >
+          <AppIcon className="w-5 h-5" />
+        </div>
         <div className="flex gap-4">
            <button onClick={toggleLanguage} className="text-neu-text/80 font-bold">
              {language === 'en' ? 'ZH' : 'EN'}
