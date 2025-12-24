@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   LayoutGrid, 
   Lock, 
@@ -324,6 +324,13 @@ const Dashboard: React.FC<{
 const MainLayout = () => {
   const [activeTool, setActiveTool] = useState<ToolId>(ToolId.DASHBOARD);
   const { theme, toggleTheme, language, setLanguage, t, addRecentTool, setSettingsOpen } = useAppStore();
+
+  // Update document title when language changes
+  useEffect(() => {
+    if (t && t.app && t.app.browserTitle) {
+      document.title = t.app.browserTitle;
+    }
+  }, [t]);
 
   const handleToolSelect = (id: ToolId) => {
     setActiveTool(id);

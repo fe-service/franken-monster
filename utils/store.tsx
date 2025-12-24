@@ -25,8 +25,35 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('zh');
-  const [theme, setTheme] = useState<Theme>('light');
+  // Initialize Language: Check LocalStorage -> Check Browser -> Default 'zh'
+  const [language, setLanguage] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('neubox_lang') as Language;
+        if (saved) return saved;
+        
+        // Detect browser language
+        const browserLang = navigator.language || (navigator.languages && navigator.languages[0]);
+        if (browserLang && browserLang.toLowerCase().includes('en')) {
+            return 'en';
+        }
+    }
+    return 'zh'; // Default to Chinese if not English
+  });
+
+  // Initialize Theme: Check LocalStorage -> Check System Preference -> Default 'light'
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('neubox_theme') as Theme;
+        if (saved) return saved;
+        
+        // Detect system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        }
+    }
+    return 'light';
+  });
+
   const [recentTools, setRecentTools] = useState<ToolId[]>([]);
   const [favoriteTools, setFavoriteTools] = useState<ToolId[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
@@ -35,25 +62,16 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [aiModels, setAiModels] = useState<AiModelConfig[]>([]);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
 
-  // Load saved settings
+  // Load saved data (Settings are handled in useState init, but we ensure consistency here)
   useEffect(() => {
-    const savedLang = localStorage.getItem('neubox_lang') as Language;
-    const savedTheme = localStorage.getItem('neubox_theme') as Theme;
     const savedRecents = localStorage.getItem('neubox_recents');
     const savedFavorites = localStorage.getItem('neubox_favorites');
     const savedNotes = localStorage.getItem('neubox_notes');
     const savedModels = localStorage.getItem('neubox_ai_models');
     
-    // Set language first so we can use correct translations if needed
-    let currentLang = language;
-    if (savedLang) {
-      setLanguage(savedLang);
-      currentLang = savedLang;
-    }
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    }
+    // Ensure the theme attribute is set on mount (in case it changed during hydration or wasn't set by index.html logic correctly)
+    document.documentElement.setAttribute('data-theme', theme);
+
     if (savedRecents) {
       try {
         setRecentTools(JSON.parse(savedRecents));
@@ -121,7 +139,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         let finalNotes = processedNotes;
 
         if (unfinishedTasks.length > 0) {
-            const title = translations[currentLang].tools.myNotes.migratedTitle + ' ' + new Date().toLocaleDateString();
+            // Use current language for the migrated title
+            const title = translations[language].tools.myNotes.migratedTitle + ' ' + new Date().toLocaleDateString();
             const migratedNote: Note = {
                 id: Date.now().toString(),
                 title: title,
@@ -143,12 +162,13 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         console.error('Failed to parse notes', e);
       }
     } else {
-        // Initial Sample Note (Localized default for ZH)
+        // Initial Sample Note
+        const isZh = language === 'zh';
         setNotes([{
             id: '1',
-            title: '欢迎使用',
+            title: isZh ? '欢迎使用' : 'Welcome',
             color: 'bg-yellow-200',
-            tasks: [{ id: 't1', text: '创建您的第一条便签', done: false }],
+            tasks: [{ id: 't1', text: isZh ? '创建您的第一条便签' : 'Create your first note', done: false }],
             createdAt: Date.now(),
             pinned: true
         }]);

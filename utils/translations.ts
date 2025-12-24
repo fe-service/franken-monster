@@ -13,6 +13,7 @@ export const translations = {
     },
     app: {
       title: 'FrankenMonster',
+      browserTitle: 'FrankenMonster - Tool Collection',
       subtitle: 'A monstrous collection of various utility tools stitched together.',
       dashboard: 'Dashboard',
       settings: 'Settings',
@@ -266,6 +267,7 @@ export const translations = {
     },
     app: {
       title: '缝合怪',
+      browserTitle: '缝合怪 - 工具集合',
       subtitle: '各种实用工具缝合在一起的怪兽级集合。',
       dashboard: '仪表盘',
       settings: '设置',

@@ -102,6 +102,9 @@
       const savedTheme = localStorage.getItem('neubox_theme');
       if (savedTheme) {
         document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // System preference detection
+        document.documentElement.setAttribute('data-theme', 'dark');
       }
     </script>
     <script type="module" src="/index.tsx"></script>
