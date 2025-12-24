@@ -171,8 +171,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     if (id === ToolId.DASHBOARD) return;
 
     setRecentTools(prev => {
-      // Remove existing occurrence of the id, add to front, slice to keep max 3
-      const newRecents = [id, ...prev.filter(toolId => toolId !== id)].slice(0, 3);
+      // Remove existing occurrence of the id, add to front, slice to keep max 4
+      const newRecents = [id, ...prev.filter(toolId => toolId !== id)].slice(0, 4);
       localStorage.setItem('neubox_recents', JSON.stringify(newRecents));
       return newRecents;
     });
