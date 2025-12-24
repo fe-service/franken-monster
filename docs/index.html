@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FrankenMonster - Tool Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon-KsM68f0y.svg" />
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Nunito', 'sans-serif'],
+            },
+            colors: {
+              neu: {
+                base: 'rgb(var(--neu-base) / <alpha-value>)',
+                text: 'rgb(var(--neu-text) / <alpha-value>)',
+                accent: 'rgb(var(--neu-accent) / <alpha-value>)',
+              }
+            },
+            boxShadow: {
+              'neu-flat': 'var(--shadow-neu-flat)',
+              'neu-pressed': 'var(--shadow-neu-pressed)',
+              'neu-icon': 'var(--shadow-neu-icon)',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      :root {
+        /* Light Theme (Default) */
+        --neu-base: 224 229 236; /* #e0e5ec */
+        --neu-text: 77 91 124;   /* #4d5b7c */
+        --neu-accent: 109 93 252; /* #6d5dfc */
+        
+        --shadow-neu-flat: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);
+        --shadow-neu-pressed: inset 6px 6px 10px 0 rgba(163,177,198, 0.7), inset -6px -6px 10px 0 rgba(255,255,255, 0.8);
+        --shadow-neu-icon: 5px 5px 10px rgb(163,177,198,0.6), -5px -5px 10px rgba(255,255,255, 0.5);
+      }
+
+      [data-theme="dark"] {
+        /* Dark Theme */
+        --neu-base: 41 45 62; /* #292d3e */
+        --neu-text: 224 229 236; /* #e0e5ec */
+        --neu-accent: 139 127 255; /* #8b7fff */
+
+        --shadow-neu-flat: 6px 6px 12px #1f222e, -6px -6px 12px #33384e;
+        --shadow-neu-pressed: inset 6px 6px 12px #1f222e, inset -6px -6px 12px #33384e;
+        --shadow-neu-icon: 5px 5px 10px #1f222e, -5px -5px 10px #33384e;
+      }
+
+      body {
+        background-color: rgb(var(--neu-base));
+        color: rgb(var(--neu-text));
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Custom scrollbar to match neu theme */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(var(--neu-text), 0.3);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(var(--neu-text), 0.5);
+      }
+    </style>
+
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.560.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom": "https://esm.sh/react-dom@^19.2.3",
+    "@monaco-editor/react": "https://esm.sh/@monaco-editor/react@^4.6.0",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
+  }
+}
+</script>
+  <script type="module" crossorigin src="./assets/index-CxetN5ic.js"></script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Initialize theme to avoid flash
+      const savedTheme = localStorage.getItem('neubox_theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      }
+    </script>
+  </body>
+</html>
