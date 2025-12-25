@@ -24,7 +24,9 @@ import {
   Code,
   Layers,
   Activity,
-  Settings
+  Settings,
+  Clock,
+  Globe
 } from 'lucide-react';
 import { ToolId, ToolCategory } from './types';
 import { NeuButton } from './components/ui/NeuButton';
@@ -42,6 +44,8 @@ import { PaletteGenerator } from './components/tools/PaletteGenerator';
 import { UrlEncoder } from './components/tools/UrlEncoder';
 import { CodeFormatter } from './components/tools/CodeFormatter';
 import { GradientGenerator } from './components/tools/GradientGenerator';
+import { TimeConverter } from './components/tools/TimeConverter';
+import { HttpRequest } from './components/tools/HttpRequest'; // Added
 import { SettingsModal } from './components/ui/SettingsModal';
 import { AppIcon } from './components/ui/AppIcon';
 import { AppProvider, useAppStore } from './utils/store';
@@ -97,7 +101,15 @@ const Dashboard: React.FC<{
       desc: t.tools.urlEncoder.desc,
       category: ToolCategory.UTILITIES
     },
-    // 5. Code
+    // 5. HTTP Request (New)
+    { 
+      id: ToolId.HTTP_REQUEST, 
+      name: t.tools.httpRequest.name, 
+      icon: <Globe size={28} />, 
+      desc: t.tools.httpRequest.desc,
+      category: ToolCategory.UTILITIES
+    },
+    // 6. Code
     { 
       id: ToolId.CODE_FORMATTER, 
       name: t.tools.codeFormatter.name, 
@@ -105,7 +117,15 @@ const Dashboard: React.FC<{
       desc: t.tools.codeFormatter.desc,
       category: ToolCategory.UTILITIES
     },
-    // 6. Currency
+    // 7. Time Converter (Added)
+    { 
+      id: ToolId.TIME_CONVERTER, 
+      name: t.tools.timeConverter.name, 
+      icon: <Clock size={28} />, 
+      desc: t.tools.timeConverter.desc,
+      category: ToolCategory.UTILITIES
+    },
+    // 8. Currency
     { 
       id: ToolId.CURRENCY_CONVERTER, 
       name: t.tools.currencyConverter.name, 
@@ -113,7 +133,7 @@ const Dashboard: React.FC<{
       desc: t.tools.currencyConverter.desc,
       category: ToolCategory.UTILITIES
     },
-    // 7. Color Mixer
+    // 9. Color Mixer
     { 
       id: ToolId.COLOR_MIXER, 
       name: t.tools.colorMixer.name, 
@@ -121,7 +141,7 @@ const Dashboard: React.FC<{
       desc: t.tools.colorMixer.desc,
       category: ToolCategory.UTILITIES 
     },
-    // 8. Palette
+    // 10. Palette
     { 
       id: ToolId.PALETTE_GENERATOR, 
       name: t.tools.paletteGenerator.name, 
@@ -129,7 +149,7 @@ const Dashboard: React.FC<{
       desc: t.tools.paletteGenerator.desc,
       category: ToolCategory.UTILITIES
     },
-    // 9. Gradient
+    // 11. Gradient
     { 
       id: ToolId.GRADIENT_GENERATOR, 
       name: t.tools.gradientGenerator.name, 
@@ -139,7 +159,7 @@ const Dashboard: React.FC<{
     },
     
     // Remaining Utilities
-    // Regex Tester (Swapped with Password Gen)
+    // Regex Tester
     { 
       id: ToolId.REGEX_TESTER, 
       name: t.tools.regexTester.name, 
@@ -359,10 +379,12 @@ const MainLayout = () => {
       case ToolId.BMI_CALCULATOR: return <BmiCalculator />;
       case ToolId.CRYPTO_TOOL: return <CryptoTool />;
       case ToolId.JSON_FORMATTER: return <JsonFormatter />;
+      case ToolId.TIME_CONVERTER: return <TimeConverter />;
       case ToolId.CURRENCY_CONVERTER: return <CurrencyConverter />;
       case ToolId.REGEX_TESTER: return <RegexTester />;
       case ToolId.PALETTE_GENERATOR: return <PaletteGenerator />;
       case ToolId.URL_ENCODER: return <UrlEncoder />;
+      case ToolId.HTTP_REQUEST: return <HttpRequest />; // Added
       case ToolId.CODE_FORMATTER: return <CodeFormatter />;
       case ToolId.GRADIENT_GENERATOR: return <GradientGenerator />;
       

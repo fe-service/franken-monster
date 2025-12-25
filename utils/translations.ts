@@ -80,11 +80,14 @@ export const translations = {
       },
       colorMixer: {
         name: 'Color Studio',
-        desc: 'Hex to RGB',
+        desc: 'Hex, RGB, HSL',
         title: 'Color Studio',
-        subtitle: 'Convert and preview colors in soft UI style.',
-        hexInput: 'HEX Input',
-        rgbSliders: 'RGB Sliders'
+        subtitle: 'Convert between HEX, RGB, and HSL formats.',
+        hex: 'HEX',
+        rgb: 'RGB (A)',
+        hsl: 'HSL (A)',
+        sliders: 'Adjusters',
+        converters: 'Converters'
       },
       aiIdea: {
         name: 'AI Spark',
@@ -170,6 +173,29 @@ export const translations = {
         minify: 'Minify',
         invalid: 'Invalid JSON'
       },
+      timeConverter: {
+        name: 'Time Converter',
+        desc: 'Timestamp & Date',
+        title: 'Time Converter',
+        subtitle: 'Auto-detects timestamps or date strings.',
+        input: 'Input Date / Timestamp',
+        now: 'Now',
+        timezone: 'Timezone',
+        formats: {
+            timestampMs: 'Timestamp (ms)',
+            timestampSec: 'Timestamp (sec)',
+            iso: 'ISO 8601',
+            utc: 'UTC',
+            local: 'Local Time',
+            chinese: 'Chinese Format',
+            stdDash: 'Standard (-)',
+            stdSlash: 'Standard (/)',
+            compact: 'Compact',
+            date: 'Date Only',
+            time: 'Time Only'
+        },
+        invalid: 'Invalid Date Format'
+      },
       currencyConverter: {
         name: 'Currency',
         desc: 'Exchange Rates',
@@ -184,11 +210,27 @@ export const translations = {
         title: 'Regex Tester',
         subtitle: 'Test regular expressions against text.',
         pattern: 'Pattern (e.g. ^[a-z]+$)',
-        flags: 'Flags (e.g. gi)',
+        flags: 'Flags',
         testString: 'Test String',
         matches: 'Matches',
         noMatch: 'No matches found',
-        invalidRegex: 'Invalid Regular Expression'
+        invalidRegex: 'Invalid Regular Expression',
+        selectPreset: 'Select a common pattern...',
+        presets: {
+          alpha: 'Letters (a-z, A-Z)',
+          chinese: 'Chinese Characters',
+          username: 'Username (Alphanumeric, 4-16)',
+          password: 'Strong Password',
+          email: 'Email Address',
+          phone: 'Mobile Phone (CN)',
+          landline: 'Landline (CN)',
+          zip: 'Zip Code (CN)',
+          idCard: 'ID Card (CN)',
+          ipv4: 'IPv4 Address',
+          url: 'URL / Website',
+          number: 'Integer',
+          decimal: 'Decimal Number'
+        }
       },
       paletteGenerator: {
         name: 'Palette Gen',
@@ -233,6 +275,38 @@ export const translations = {
         pathPlaceholder: '/path/to/resource',
         hashPlaceholder: '#section',
         noParams: 'No query parameters'
+      },
+      httpRequest: {
+        name: 'Simple Postman',
+        desc: 'Rest & WS & Stream',
+        title: 'Simple Postman',
+        subtitle: 'Test Rest APIs, WebSocket, and Streaming responses.',
+        method: 'Method',
+        url: 'URL',
+        send: 'Send',
+        connect: 'Connect',
+        disconnect: 'Disconnect',
+        importCurl: 'Import cURL',
+        importTitle: 'Paste cURL or URL',
+        tabs: {
+          params: 'Params',
+          headers: 'Headers',
+          body: 'Body',
+          response: 'Response',
+          wsLog: 'WS Log',
+          history: 'History'
+        },
+        status: 'Status',
+        time: 'Time',
+        size: 'Size',
+        key: 'Key',
+        value: 'Value',
+        wsConnected: 'Connected',
+        wsDisconnected: 'Disconnected',
+        wsMsgPlaceholder: 'Message to send...',
+        sendMsg: 'Send Message',
+        streamToggle: 'Stream',
+        sending: 'Sending...'
       },
       codeFormatter: {
         name: 'Code Formatter',
@@ -334,11 +408,14 @@ export const translations = {
       },
       colorMixer: {
         name: '色彩工坊',
-        desc: 'HEX 转 RGB',
+        desc: '多格式转换',
         title: '色彩工坊',
-        subtitle: '以柔和的 UI 风格转换和预览颜色。',
-        hexInput: 'HEX 输入',
-        rgbSliders: 'RGB 滑块'
+        subtitle: '支持 HEX、RGB(A) 及 HSL(A) 格式的实时转换与预览。',
+        hex: 'HEX',
+        rgb: 'RGB (A)',
+        hsl: 'HSL (A)',
+        sliders: '色彩调节',
+        converters: '格式转换'
       },
       aiIdea: {
         name: 'AI 灵感',
@@ -424,6 +501,29 @@ export const translations = {
         minify: '压缩',
         invalid: '无效的 JSON'
       },
+      timeConverter: {
+        name: '时间转换',
+        desc: '时间戳与日期',
+        title: '时间转换工具',
+        subtitle: '自动识别时间戳或日期字符串并转换。',
+        input: '输入日期 / 时间戳',
+        now: '当前时间',
+        timezone: '目标时区',
+        formats: {
+            timestampMs: '时间戳 (毫秒)',
+            timestampSec: '时间戳 (秒)',
+            iso: 'ISO 8601',
+            utc: 'UTC 时间',
+            local: '本地时间',
+            chinese: '中文完整 (星期)',
+            stdDash: '标准格式 (-)',
+            stdSlash: '标准格式 (/)',
+            compact: '紧凑格式',
+            date: '仅日期',
+            time: '仅时间'
+        },
+        invalid: '无效日期格式'
+      },
       currencyConverter: {
         name: '汇率转换',
         desc: '实时汇率',
@@ -442,7 +542,23 @@ export const translations = {
         testString: '测试文本',
         matches: '匹配结果',
         noMatch: '未找到匹配项',
-        invalidRegex: '正则表达式无效'
+        invalidRegex: '正则表达式无效',
+        selectPreset: '选择常用表达式...',
+        presets: {
+          alpha: '字母 (a-z, A-Z)',
+          chinese: '中文字符',
+          username: '用户名 (字母数字下划线, 4-16位)',
+          password: '强密码 (大小写数字特殊符, 8位+)',
+          email: '电子邮箱',
+          phone: '手机号码 (中国)',
+          landline: '固定电话 (中国)',
+          zip: '邮政编码 (中国)',
+          idCard: '身份证号 (中国 15/18位)',
+          ipv4: 'IPv4 地址',
+          url: 'URL / 网址',
+          number: '整数',
+          decimal: '浮点数 / 小数'
+        }
       },
       paletteGenerator: {
         name: '配色工具',
@@ -487,6 +603,38 @@ export const translations = {
         pathPlaceholder: '/path/to/resource',
         hashPlaceholder: '#锚点',
         noParams: '暂无查询参数'
+      },
+      httpRequest: {
+        name: '简易 Postman',
+        desc: 'Rest & WS & Stream',
+        title: '简易 Postman',
+        subtitle: '测试 Rest API、WebSocket 和流式响应。',
+        method: '方法',
+        url: 'URL 地址',
+        send: '发送',
+        connect: '连接',
+        disconnect: '断开',
+        importCurl: '导入 cURL',
+        importTitle: '粘贴 cURL 或 URL',
+        tabs: {
+          params: '参数 (Params)',
+          headers: '请求头 (Headers)',
+          body: '请求体 (Body)',
+          response: '响应结果',
+          wsLog: 'WS 日志',
+          history: '历史记录'
+        },
+        status: '状态',
+        time: '耗时',
+        size: '大小',
+        key: '键',
+        value: '值',
+        wsConnected: '已连接',
+        wsDisconnected: '已断开',
+        wsMsgPlaceholder: '发送消息...',
+        sendMsg: '发送消息',
+        streamToggle: '流式模式',
+        sending: '请求中...'
       },
       codeFormatter: {
         name: '代码格式化',
